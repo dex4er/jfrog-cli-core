@@ -2,6 +2,7 @@ package lifecycle
 
 import (
 	"errors"
+	"fmt"
 	"path"
 
 	"github.com/jfrog/jfrog-cli-core/v2/artifactory/utils"
@@ -20,7 +21,7 @@ func (rbc *ReleaseBundleCreateCommand) createFromArtifacts(lcServicesManager *li
 		return err
 	}
 
-	log.Info("Searching artifacts...")
+	log.Info(fmt.Sprintf("Searching artifacts with timeout %s...", rtServicesManager.GetConfig().GetOverallRequestTimeout()))
 	searchResults, callbackFunc, err := utils.SearchFiles(rtServicesManager, rbc.spec)
 	defer func() {
 		err = errors.Join(err, callbackFunc())
